@@ -3,7 +3,7 @@ from pendulum import datetime
 from airflow.providers.standard.operators.bash import BashOperator
 from airflow.providers.standard.sensors.filesystem import FileSensor
 from airflow.sdk import TaskGroup, dag, task
-from include import functions as f
+from include.functions import processing_funcs as f
 
 from include.reviews_config import (
     CONTENT_COL,
@@ -49,7 +49,6 @@ def process_reviews():
         replace_nulls = task(f.replace_nulls)
         sort_by_created_date = task(f.sort_by_created_date)
         clean_content = task(f.clean_content, outlets=[PROCESSED_ASSET])
-
 
         (
             replace_nulls(RAW_FILE, STEP1_FILE)

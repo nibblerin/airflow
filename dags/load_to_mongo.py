@@ -19,7 +19,6 @@ def load_to_mongo():
 
         df = pd.read_csv(src)
 
-        # типы нужны для агрегаций: даты -> Date, рейтинг -> число
         for col in DATE_COLS:
             df[col] = pd.to_datetime(df[col], errors="coerce")
         df[RATING_COL] = pd.to_numeric(df[RATING_COL], errors="coerce")

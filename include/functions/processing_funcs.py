@@ -23,9 +23,15 @@ def sort_by_created_date(src: str, dst: str, column: str) -> None:
     df = df.sort_values("_sort_key").drop(columns="_sort_key")
     df.to_csv(dst, index=False)
 
+def clean_text(text: object) -> str:
+    import re
+    text = re.sub(r"[^\w\s.,!?;:'\"()\-]", "", str(text))
+    return re.sub(r"\s+", " ", text).strip()
+
 def clean_content(src: str, dst: str, column: str) -> None:
     import pandas as pd
 
     df = pd.read_csv(src)
     df[column] = df[column].apply(clean_text)
     df.to_csv(dst, index=False)
+
