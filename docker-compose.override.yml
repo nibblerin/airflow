@@ -1,0 +1,17 @@
+services:
+  mongo:
+    image: mongo:8.3.11-noble
+    container_name: mongo
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:27017:27017"    
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 1375
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - airflow
+
+volumes:
+  mongo_data:
