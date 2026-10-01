@@ -1,3 +1,5 @@
+import re
+
 def is_file_empty(path: str) -> bool:
     import os
 
@@ -11,8 +13,16 @@ def is_file_empty(path: str) -> bool:
 def replace_nulls(src: str, dst: str) -> None:
     import pandas as pd
 
-    df = pd.read_csv(src)
-    df = df.replace("null", pd.NA).fillna("-")
+    df = pd.read_csv(src, dtype=str, keep_default_na=False)
+    df = df.replace(r"^\s*$", pd.NA, regex=True)
+    df = df.replace(r"^N\W?A$", pd.NA, regex=True)
+    df = df.replace(
+        ["null", "NULL", "Null", "None", "none",
+         "nan", "NaN", "N/A", "n/a"],
+        pd.NA,
+    )
+    
+    df = df.fillna("-")                 
     df.to_csv(dst, index=False)
 
 def sort_by_created_date(src: str, dst: str, column: str) -> None:
@@ -24,14 +34,16 @@ def sort_by_created_date(src: str, dst: str, column: str) -> None:
     df.to_csv(dst, index=False)
 
 def clean_text(text: object) -> str:
-    import re
-    text = re.sub(r"[^\w\s.,!?;:'\"()\-]", "", str(text))
-    return re.sub(r"\s+", " ", text).strip()
+    text = str(text)
+    if text == "-":
+        return "-"
+    cleaned = re.sub(r'[^\w\s.,!?;:\'"()\-]', '', text)
+    cleaned = re.sub(r"\s+", " ", cleaned).strip()
+    return cleaned if cleaned else "-" 
+
 
 def clean_content(src: str, dst: str, column: str) -> None:
     import pandas as pd
-
-    df = pd.read_csv(src)
+    df = pd.read_csv(src, dtype=str, keep_default_na=False)
     df[column] = df[column].apply(clean_text)
     df.to_csv(dst, index=False)
-

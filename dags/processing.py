@@ -16,7 +16,6 @@ from include.reviews_config import (
     STEP2_FILE,
 )
 
-
 @dag(
     dag_id="process_reviews",
     start_date=datetime(2026, 9, 30),
@@ -57,6 +56,5 @@ def process_reviews():
         )
 
     wait_for_file >> check_file_empty(RAW_FILE) >> [log_empty_file, processing]
-
 
 process_reviews()
