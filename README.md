@@ -6,6 +6,7 @@ Top 5 frequently occurring comments
   { $sort: { count: -1 } },
   { $limit: 5 }
 ]
+```
 ![alt text](image-6.png)
 All entries where the “content” field is less than 5 characters long;
 ![alt text](image-4.png)
@@ -36,3 +37,4 @@ Average rating for each day (the result should be in timestamp type).
   }
 ]
 ![alt text](image-5.png)
+```
