@@ -16,6 +16,5 @@ CREATED_COL = "at"
 CONTENT_COL = "content"
 RATING_COL = "score"
 DATE_COLS = ["at", "repliedAt"]
-COMMENT_COL = "replyContent"
 
 PROCESSED_ASSET = Asset(name="processed_reviews", uri=f"file://{FINAL_FILE}")

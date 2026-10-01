@@ -2,27 +2,26 @@ import re
 
 def is_file_empty(path: str) -> bool:
     import os
-
     import pandas as pd
 
+    if os.path.getsize(path) == 0:
+        return True
+
     try:
-        return os.path.getsize(path) == 0 or pd.read_csv(path).empty
+        return pd.read_csv(path, nrows=1).empty
     except pd.errors.EmptyDataError:
         return True
 
 def replace_nulls(src: str, dst: str) -> None:
     import pandas as pd
 
+    NA_STRINGS = {"null", "NULL", "Null", "None", "none",
+                  "nan", "NaN", "N/A", "n/a"}
+
     df = pd.read_csv(src, dtype=str, keep_default_na=False)
-    df = df.replace(r"^\s*$", pd.NA, regex=True)
-    df = df.replace(r"^N\W?A$", pd.NA, regex=True)
-    df = df.replace(
-        ["null", "NULL", "Null", "None", "none",
-         "nan", "NaN", "N/A", "n/a"],
-        pd.NA,
-    )
-    
-    df = df.fillna("-")                 
+    df = df.replace(r"^\s*$|^N\W?A$", pd.NA, regex=True)
+    df = df.mask(df.isin(NA_STRINGS), pd.NA)
+    df = df.fillna("-")
     df.to_csv(dst, index=False)
 
 def sort_by_created_date(src: str, dst: str, column: str) -> None:

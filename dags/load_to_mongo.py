@@ -10,7 +10,7 @@ from include.reviews_config import DATE_COLS, FINAL_FILE, PROCESSED_ASSET, RATIN
     catchup=False,
     tags=["mongo"],
 )
-# i tried to apply oop & functional programming so that each step has its own function as it is in the first dag
+# i tried to apply single responsibility for functions so that each step has its own function as it is in the first dag
 # but it decreses performance DRASTICALLY (30 seconds against 1.5 min), so everything is in one task
 def load_to_mongo():
     @task
