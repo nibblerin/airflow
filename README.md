@@ -36,5 +36,5 @@ Average rating for each day (the result should be in timestamp type).
     }
   }
 ]
-![alt text](image-5.png)
 ```
+![alt text](image-5.png)
