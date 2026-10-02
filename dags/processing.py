@@ -37,7 +37,7 @@ def process_reviews():
     def check_file_empty(raw_file: str) -> str:
         if f.is_file_empty(raw_file):
             return "log_empty_file"
-        return "processing.replace_nulls"
+        return "processing.replace_nulls" #the same as return "processing"
 
     log_empty_file = BashOperator(
         task_id="log_empty_file",
