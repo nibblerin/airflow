@@ -1,5 +1,6 @@
 from pendulum import datetime
 from airflow.sdk import dag, task
+import pandas as pd
 
 from include.reviews_config import DATE_COLS, FINAL_FILE, PROCESSED_ASSET, RATING_COL
 
@@ -11,11 +12,10 @@ from include.reviews_config import DATE_COLS, FINAL_FILE, PROCESSED_ASSET, RATIN
     tags=["mongo"],
 )
 # i tried to apply single responsibility for functions so that each step has its own function as it is in the first dag
-# but it decreses performance DRASTICALLY (30 seconds against 1.5 min), so everything is in one task
+# but i empirically found out that it decreses performance DRASTICALLY (30 seconds against 1.5 min), so everything is in one task
 def load_to_mongo():
     @task
     def load(src: str, mongo_db: str, mongo_collection: str) -> None:
-        import pandas as pd
 
         from airflow.providers.mongo.hooks.mongo import MongoHook
 

@@ -3,7 +3,9 @@ from pendulum import datetime
 from airflow.providers.standard.operators.bash import BashOperator
 from airflow.providers.standard.sensors.filesystem import FileSensor
 from airflow.sdk import TaskGroup, dag, task
-from include.functions import processing_funcs as f
+from airflow.timetables.interval import CronDataIntervalTimetable
+
+from dags.processing import processing_funcs as f
 
 from include.reviews_config import (
     CONTENT_COL,
