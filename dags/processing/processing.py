@@ -1,5 +1,4 @@
 from pendulum import datetime
-
 from airflow.providers.standard.operators.bash import BashOperator
 from airflow.providers.standard.sensors.filesystem import FileSensor
 from airflow.sdk import TaskGroup, dag, task
@@ -21,7 +20,9 @@ from include.reviews_config import (
 @dag(
     dag_id="process_reviews",
     start_date=datetime(2026, 9, 30),
-    schedule="@daily",
+    schedule=CronDataIntervalTimetable(
+    "@daily",
+    timezone="UTC"),
     catchup=False,
     tags=["process"],
 )
